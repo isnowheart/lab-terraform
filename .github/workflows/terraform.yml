@@ -8,32 +8,26 @@ jobs:
     name: Terraform
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Install Node.js 16
-        uses: actions/setup-node@v2
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1    
         with:
           node-version: '16.x'
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
-        with:
           terraform_version: 1.4.4
-
       - name: Terraform fmt
         run: terraform fmt -check
-
       - name: Terraform validate
         run: terraform validate
-
       - name: Install tfsec
         run: curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
       - name: Run tfsec
-        run: tfsec
+        run: tfsec .
   sonarqube:
     name: SonarQube
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - uses: sonarsource/sonarqube-scan-action@master
