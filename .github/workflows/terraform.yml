@@ -11,10 +11,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Install Node.js 16
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v1
         with:
-          node-version: '16.x'
-
+          node-version: '16.16.0'
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1    
         with:
@@ -22,11 +21,17 @@ jobs:
       - name: Install tfsec
         run: curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash && tfsec --version
       - name: Terraform Format
-        run: terraform fmt -check -diff -recursive
+        run: terraform fmt -check -diff -recursive > $GITHUB_OUTPUT
+      - name: Print Terraform output
+        run: echo $GITHUB_OUTPUT
       - name: Terraform Validate
-        run: terraform validate
+        run: terraform validate > $GITHUB_OUTPUT
+      - name: Print Terraform output
+        run: echo $GITHUB_OUTPUT 
       - name: Run tfsec
-        run: tfsec .
+        run: tfsec . > $GITHUB_OUTPUT
+      - name: Print Terraform output
+        run: echo $GITHUB_OUTPUT
   sonarqube:
     name: SonarQube
     runs-on: ubuntu-latest
