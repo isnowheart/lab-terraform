@@ -23,10 +23,9 @@ jobs:
         run: terraform validate
 
       - name: Install tfsec
-        run: curl -L "$(curl -s https://api.github.com/repos/aquasecurity/tfsec/releases/latest | grep -o -E "https://.+?tfsec-linux-amd64")" > tfsec && chmod +x tfsec
-
+        run: curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
       - name: Run tfsec
-        run: ./tfsec
+        run: tfsec
   sonarqube:
     name: SonarQube
     runs-on: ubuntu-latest
