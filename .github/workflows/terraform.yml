@@ -22,11 +22,11 @@ jobs:
       - name: Install tfsec
         run: curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash && tfsec --version
       - name: Terraform Format
-        run: terraform fmt -check -diff -recursive > $GITHUB_ENV
+        run: terraform fmt -check -diff -recursive > $GITHUB_OUTPUT
       - name: Terraform Validate
-        run: terraform validate > $GITHUB_ENV
+        run: terraform validate > $GITHUB_OUTPUT
       - name: Run tfsec
-        run: tfsec . > $GITHUB_ENV        
+        run: tfsec . > $GITHUB_OUTPUT
   sonarqube:
     name: SonarQube
     runs-on: ubuntu-latest
